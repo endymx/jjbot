@@ -1,16 +1,16 @@
-package botapi
+package bot
 
 import (
-	"github.com/gorilla/websocket"
+	"github.com/lxzan/gws"
 	"github.com/tidwall/sjson"
-	"jjbot/service/logger"
+	"jjbot/core/logger"
 	"time"
 )
 
-var Api *websocket.Conn
+var api *gws.Conn
 
 func send(action string, params any, echo string) {
-	if Api != nil {
+	if api != nil {
 		logger.SugarLogger.Errorf("QQ机器人未成功登录，无法发送")
 		return
 	}
@@ -21,7 +21,7 @@ func send(action string, params any, echo string) {
 	if echo != "" {
 		json, _ = sjson.Set(json, "echo", echo)
 	}
-	err := Api.WriteMessage(websocket.TextMessage, []byte(json))
+	err := api.WriteMessage(gws.OpcodeText, []byte(json))
 	if err != nil {
 		logger.SugarLogger.Errorf("发送给QQ机器人消息失败：%s", err)
 	}
@@ -30,9 +30,8 @@ func send(action string, params any, echo string) {
 //##################################信息类###################################
 
 // SendPrivateMsg
-/**
+/*
  * @Description 发送私聊消息
- * @auth endymx
  * @param int user_id QQ号
  * @param string msg 要发送的内容
  * @param boolean auto_escape 消息内容是否作为纯文本发送（即不解析 CQ 码），只在 message 字段是字符串时有效
@@ -46,7 +45,7 @@ func SendPrivateMsg(userId int64, msg string, autoEscape bool) {
 	send("send_private_msg", m, "MessageData")
 }
 
-//SendGroupMsg
+// SendGroupMsg
 /**
  * @Description 发送群消息
  * @auth endymx

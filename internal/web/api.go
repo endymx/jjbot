@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/go-resty/resty/v2"
-	"jjbot/service/logger"
+	"jjbot/core/logger"
 	"net/http"
 	"time"
 )

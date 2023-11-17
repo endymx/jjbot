@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
-	"jjbot/common/db/mongodb"
-	"jjbot/service/logger"
+	"jjbot/core/logger"
+	"jjbot/internal/db/mongodb"
 	"strconv"
 	"time"
 )

@@ -5,8 +5,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"jjbot/service/bot/botapi"
-	"jjbot/service/logger"
+	"jjbot/core/logger"
+	"jjbot/core/v12"
 	"time"
 )
 
@@ -19,7 +19,7 @@ func (client *api) InsertOne(d string, c string, a any) *mongo.InsertOneResult {
 	insertResult, err := collection.InsertOne(context.TODO(), a)
 	if err != nil {
 		logger.SugarLogger.Errorf("插入数据错误: %v", err)
-		botapi.SendPrivateMsg(345793738, "插入数据错误", false)
+		v12.SendPrivateMsg(345793738, "插入数据错误", false)
 	}
 	logger.SugarLogger.Debugf("插入单条数据：%s", insertResult.InsertedID)
 	return insertResult
@@ -34,7 +34,7 @@ func (client *api) InsertMany(d string, c string, a []any) *mongo.InsertManyResu
 	insertManyResult, err := collection.InsertMany(context.TODO(), a)
 	if err != nil {
 		logger.SugarLogger.Errorf("插入数据错误: %v", err)
-		botapi.SendPrivateMsg(345793738, "插入数据错误", false)
+		v12.SendPrivateMsg(345793738, "插入数据错误", false)
 	}
 	logger.SugarLogger.Debugf("插入多个数据: %d", insertManyResult.InsertedIDs)
 	return insertManyResult
@@ -153,7 +153,7 @@ func (client *api) UpdateOne(d string, c string, b any, a any) *mongo.UpdateResu
 	ur, err := collection.UpdateOne(ctx, b, a)
 	if err != nil {
 		logger.SugarLogger.Errorf("更新数据错误: %v", err)
-		botapi.SendPrivateMsg(345793738, "更新数据错误", false)
+		v12.SendPrivateMsg(345793738, "更新数据错误", false)
 	}
 	logger.SugarLogger.Debugf("更新了%v条数据", ur.ModifiedCount)
 	return ur
@@ -171,7 +171,7 @@ func (client *api) UpdateMany(d string, c string, b any, a any) *mongo.UpdateRes
 	ur, err := collection.UpdateMany(ctx, b, a)
 	if err != nil {
 		logger.SugarLogger.Errorf("更新数据错误: %v", err)
-		botapi.SendPrivateMsg(345793738, "更新数据错误", false)
+		v12.SendPrivateMsg(345793738, "更新数据错误", false)
 	}
 	logger.SugarLogger.Debugf("更新了%v条数据", ur.ModifiedCount)
 	return ur

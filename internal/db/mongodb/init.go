@@ -4,8 +4,8 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"jjbot/service/conf"
-	"jjbot/service/logger"
+	"jjbot/core/config"
+	"jjbot/core/logger"
 )
 
 var (
@@ -17,11 +17,11 @@ type api struct {
 }
 
 func InitDB() {
-	if len(conf.C.Mongodb) == 0 {
+	if len(config.C.Mongodb) == 0 {
 		logger.SugarLogger.Fatalf("无法获得mongodb地址，终止程序")
 		return
 	}
-	for _, c := range conf.C.Mongodb {
+	for _, c := range config.C.Mongodb {
 		// 设置客户端连接配置
 		clientOptions := options.Client().ApplyURI("mongodb://" + c.Addr)
 		// 连接到MongoDB

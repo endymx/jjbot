@@ -1,9 +1,9 @@
-package conf
+package config
 
 import (
 	"gopkg.in/yaml.v3"
-	"jjbot/service/bot/botapi"
-	"jjbot/service/logger"
+	"jjbot/core/logger"
+	"jjbot/core/v12"
 	"os"
 )
 
@@ -41,7 +41,7 @@ func PullConf() {
 func Parse(path string) []byte {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		botapi.SendPrivateMsg(345793738, "QQ机器人获取"+path+"文件失败", false)
+		v12.SendPrivateMsg(345793738, "QQ机器人获取"+path+"文件失败", false)
 		logger.SugarLogger.Fatalf("无法找到%s文件", path)
 	}
 	return data

@@ -2,9 +2,10 @@ package ys
 
 import (
 	"encoding/json"
+	"github.com/go-resty/resty/v2"
 	"github.com/pkg/errors"
-	"jjbot/common/web"
-	"jjbot/service/logger"
+	"jjbot/core/logger"
+	"jjbot/internal/web"
 )
 
 type Status struct {
@@ -26,13 +27,13 @@ func getData(url string, post bool, data string, header map[string]string) (stri
 	}
 
 	var status Status
-	var j string
+	var j *resty.Response
 	if post {
-		j = web.Post(url, data, false, nil, headers)
+		j, _ = web.Post(url, data, false, headers)
 	} else {
-		j = web.Get(url, nil, headers)
+		j, _ = web.Get(url, headers)
 	}
-	_ = json.Unmarshal([]byte(j), &status)
+	_ = json.Unmarshal(j.Body(), &status)
 	if status.RetCode != 0 {
 		logger.SugarLogger.Debug(j)
 	}
@@ -42,7 +43,7 @@ func getData(url string, post bool, data string, header map[string]string) (stri
 	}
 	switch status.RetCode {
 	case 0:
-		return j, nil
+		return j.String(), nil
 	case -100:
 		return "", errors.Errorf("cookie错误或失效，请重新获取Cookie并绑定")
 	case 1008:
